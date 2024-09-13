@@ -20,19 +20,16 @@ response = requests.get(url, headers=headers)
 
 # Step 2: Check if the request was successful
 if response.status_code == 200:
-    # Step 3: Parse the page content
     soup = BeautifulSoup(response.text, 'html.parser')
     
-    # Step 4: Extract the title of the page (as an example)
+    # Example: Saving the title and some links to a text file
     title = soup.title.text
     links = [link.get('href') for link in soup.find_all('a')]
 
-    data = {
-        "Page Title": title,
-        "Links": links
-    }
-
-    with open('scraped_data.json', 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+    with open('scraped_data.txt', 'w', encoding='utf-8') as file:
+        file.write(f"Page Title: {title}\n")
+        file.write("Links:\n")
+        for link in links:
+            file.write(f"{link}\n")
 else:
     print(f"Failed to retrieve the page. Status code: {response.status_code}")
